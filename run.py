@@ -1,2 +1,8 @@
-from app import app
-app.run(host="0.0.0.0",port=8080,debug=True)
+from flask_script import Manager,Shell
+from app import create_app
+
+app = create_app("default")
+manager = Manager(app)
+
+if __name__ == "__main__":
+    manager.run()
