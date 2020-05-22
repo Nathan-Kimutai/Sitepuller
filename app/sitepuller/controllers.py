@@ -5,7 +5,7 @@ main = Blueprint('main',__name__)
 
 @main.route("/")
 def index():
-    url = "https://comma.ai"
+    url = "https://boit-droid.com"
     client = FilesDownloader(url)
     data = client.download()
     return render_template("index.html",data=data)
