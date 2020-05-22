@@ -1,5 +1,5 @@
 # Python Website Cloner
-## Author 
+## Author
 [Nathan Kimutai](https://github.com/nathan-kimutai)
 
 ## Description
@@ -7,10 +7,15 @@ Python cloner is a python program to pull all the websites data including css to
 
 ## Project Setup
 
-Make sure you have the latest python editions thats either the latest 2.x or 3.x 
+Make sure you have the latest python editions thats either the latest 2.x or 3.x
 To install python do the following
 ```bash
 sudo apt install python3
+```
+You will also need flask to serve the app over the internet so to do so you will need to install python flask
+Type the following in the terminal
+```bash
+pip install flask
 ```
 If you are using windows then you can download the python installer and then run it as an administrator
 
@@ -19,5 +24,7 @@ Afer installation of python then install python requests and beautiful soup
 pip install beautufulsoup
 pip install requests
 ```
-If you dont have pip then you can install by doing the following
-
+If you don't have pip then you can install by doing the following
+```bash
+sudo apt install python3-pip
+```
