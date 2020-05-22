@@ -6,5 +6,11 @@
   </head>
   <body>
     <h1>Home Page</h1>
+    <h3>Files to download</h3>
+    <ul>
+      {% for d in data %}
+        <li>{{d}}</li>
+      {% endfor %}
+    </ul>
   </body>
 </html>
