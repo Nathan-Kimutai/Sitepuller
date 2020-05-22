@@ -26,7 +26,7 @@ class FilesDownloader:
         self.soup = BeautifulSoup(self.text_html,"html.parser")
         self.filetypes = {'link':'href','img':'src'}
 
-    def download(self):
+    def get_files(self):
         """
         This does the downloading after curating the html and getting
         it as a  soup
