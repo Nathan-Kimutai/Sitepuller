@@ -8,6 +8,11 @@ try:
 except ImportError:
     raise ImportError("You should first install BeautifulSoup")
 
+FILE_TYPES_TO_DOWNLOAD = {
+    "img",
+    "js"
+}
+
 class FilesDownloader:
     """
     This is the main functionality of Sitepuller,
@@ -19,9 +24,7 @@ class FilesDownloader:
         self.raw_html= requests.get(self.url)
         self.text_html = self.raw_html.text
         self.soup = BeautifulSoup(self.text_html,"html.parser")
-
-
-
+        
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download source files of a website.')
     parser.add_argument("--url",dest="url",action="store",help="this is the url for the website you wish to clone")
