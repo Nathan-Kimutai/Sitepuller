@@ -1,16 +1,7 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>SitePuller</title>
-  </head>
-  <body>
-    <h1>Home Page</h1>
-    <h3>Files to download</h3>
-    <ul>
-      {% for d in data %}
-        <li>{{d}}</li>
-      {% endfor %}
-    </ul>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Hello World</h1>
+  </div>
+{% endblock content %}
