@@ -22,13 +22,13 @@ class MyZipper:
         ## # TODO: Make sure that I write all the files and then close it after all the files
         ## have been written to the object
         try:
-            fd = open(filename,'r')
-            self.zip_obj.write(fd)
+            with open(filename,"rb") as f:
+                self.zip_obj.write(f.read)
         except Exception as err:
             logging.error(err)
-        finally:
-            # this.zip_obj.close()
-            fd.close()
+        # finally:
+        #     # this.zip_obj.close()
+        #     fd.close()
 
     def close_zip_obj(self):
         """
@@ -40,5 +40,6 @@ if __name__ == "__main__":
     path = "../downloads/"
     zip_filename = "website.zip"
     zipper = MyZipper(path,zip_filename)
-    for _,_,filename in os.walk(path):
-        zipper.write_to_zip(filename)
+    for _,_,filenames in os.walk(path):
+        for files in filenames:
+            zipper.write_to_zip(files)

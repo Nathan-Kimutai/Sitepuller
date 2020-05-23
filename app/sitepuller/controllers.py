@@ -1,4 +1,5 @@
-from flask import Blueprint,render_template,redirect,url_for,request,flash
+import os
+from flask import Blueprint,render_template,redirect,url_for,request,flash,current_app,send_file
 from ..core.downloader import FilesDownloader
 
 main = Blueprint('main',__name__)
@@ -22,6 +23,7 @@ def preview(url):
     data = client.get_files()
     return render_template("preview.html",data=data)
 
-@main.route("/name/<username>")
-def name(username):
-    return "Hello {}".format(username)
+@main.route("/download",methods=['GET','POST'])
+def download_site():
+    uploads = os.path.join(current_app.root_path,"downloads") + "/website.zip"
+    return send_file(uploads, as_attachment=True)
