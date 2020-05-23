@@ -3,15 +3,7 @@ import sys
 import os
 import requests
 import argparse
-try:
-    from bs4 import BeautifulSoup
-except ImportError:
-    raise ImportError("You should first install BeautifulSoup")
-
-FILE_TYPES_TO_DOWNLOAD = {
-    "img",
-    "js"
-}
+from bs4 import BeautifulSoup
 
 class FilesDownloader:
     """
