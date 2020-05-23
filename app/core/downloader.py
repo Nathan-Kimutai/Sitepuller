@@ -27,7 +27,8 @@ class FilesDownloader:
         for key,value in self.filetypes.items():
             for k in self.soup.findAll(key):
                 files = k.get(value)
-                if files.startswith("/") or files.startswith("css"):
+                print(files)
+                if files is not None and files.startswith("/") or files.startswith("css"):
                     files_to_download.append(files)
 
         return files_to_download
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     url = args.url
     client = FilesDownloader(url)
-    for i in client.download():
+    for i in client.get_files():
         print(i)
 #
 # html=requests.get(sys.argv[1]).text

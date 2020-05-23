@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <ul>
+      {% for file in data %}
+        <li>{{file}}</li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock content %}
