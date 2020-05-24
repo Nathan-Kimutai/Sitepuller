@@ -1,9 +1,15 @@
 #!/usr/bin/python3.7
+import logging
 import sys
 import os
 import requests
 import argparse
 from bs4 import BeautifulSoup
+
+base_dir = os.path.abspath(os.path.dirname(__file__)) + "/../downlads"
+
+DEFAULT_DIRNAME =  "website"
+DEFAULT_DIRPATH =  base_dir
 
 class FilesDownloader:
     """
@@ -16,14 +22,37 @@ class FilesDownloader:
         self.raw_html= requests.get(self.url)
         self.text_html = self.raw_html.text
         self.soup = BeautifulSoup(self.text_html,"html.parser")
+        #this are all the tags and and their attributes to look at while
+        # downloading all the content from a page
         self.filetypes = {'link':'href','img':'src'}
+
+        #check if the path exists to save files
+        if os.path.exists(DEFAULT_DIRPATH):
+            # if true change to that working directory
+            try:
+                os.chdir(DEFAULT_DIRPATH)
+                #TODO Check if we are in the right directory
+            except Exception as e:
+                #handle the exception and log out the errors
+                logging.error(e)
+        #if the path does not exitst create it
+        self.create_directory()
+
+    def create_directory(self):
+        """
+        Create the directory to save the files to be downloaded
+        """
+        try:
+            os.mkdirs(DEFAULT_DIRPATH)
+        except Exception as e:
+            logging.error(e)
 
     def get_files(self):
         """
         This does the downloading after curating the html and getting
         it as a  soup
         """
-        files_to_download = []
+        files_to_download = [] #maintaining a list of files to download
         for key,value in self.filetypes.items():
             for k in self.soup.findAll(key):
                 files = k.get(value)
@@ -37,12 +66,26 @@ class FilesDownloader:
         """
         Download all the js files that are available on the site
         """
+        #TODO Remove the below array
+        files = []
+        for j in self.soup.findAll("script"):
+            js = j.get("src")
+            if js is not None and js.startswith("/"):
+                files.append(js)
+        return js
 
     def download_img(self):
         """
-        Download all the available images on thes site
+        Download all the ava[ilable images on thes site
         """
+        files = []
+        for j in self.soup.findAl("img"):
+            img = j.get("src")
+            if img is not None:
+                files.append(img)
+        return files
 
+                
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download source files of a website.')
     parser.add_argument("--url",dest="url",action="store",help="this is the url for the website you wish to clone")
@@ -51,53 +94,3 @@ if __name__ == "__main__":
     client = FilesDownloader(url)
     for i in client.get_files():
         print(i)
-#
-# html=requests.get(sys.argv[1]).text
-# the_soup=BeautifulSoup(html,"html.parser")
-# filetypes={'link':'href','img':'src'}
-# for key,value in filetypes.items():
-#     for k in the_soup.findAll(key):
-#         files=k.get(value)
-#         if files.startswith("/") or files.startswith('css'):
-#             print(files)
-#             url=sys.argv[1]
-#             #print(files)
-#             links=url+files
-#             basename=os.path.basename(files)
-#             #print(basename)
-#             #download the files
-#             resp=requests.get(links).content
-#             filepipe=open(os.path.basename(links),'wb')
-#             filepipe.write(resp)
-#             filepipe.close()
-#             #do the actual replacement of files
-#             #print("Replacing {} with {}".format(files,basename))
-#             offset=len(files)
-#             #print(offset)
-#             index=html.find(files)
-#             #print(html[html.find(files):html.find(files)+len(files)],basename)
-#             holla=html.replace(html[index:index+offset],basename)
-#             html=holla
-#
-#         else:
-#             pass
-#
-# for j in the_soup.findAll('script'):
-#     js=j.get('src')
-#     if not js ==None and js.startswith("/"):
-#         basenamejs=os.path.basename(js)
-#
-#         resp=requests.get(sys.argv[1]+js).content
-#         filepipe=open(basenamejs,'wb')
-#         filepipe.write(resp)
-#         filepipe.close()
-#
-#         offsetjs=len(js)
-#         pos=html.find(js)
-#         print(html[pos:pos+offsetjs])
-#         hollajs=html.replace(html[pos:pos+offsetjs],basenamejs)
-#         html=hollajs
-#
-# fd=open('index.html','w')
-# fd.write(html)
-# fd.close()
