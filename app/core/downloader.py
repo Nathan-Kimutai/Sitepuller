@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
+
 import logging
 import subprocess
+import re
 import sys
 import os
 import requests
@@ -35,16 +37,14 @@ class FilesDownloader:
         #this are all the tags and and their attributes to look at while
         # downloading all the content from a page
         
-        self.filetypes = {'link':'href','img':'src'}
+        self.filetypes = {'link':'href','img':'src','script':'src'}
 
         #check if the path exists to save files
         if os.path.exists(DEFAULT_DIRPATH):
             # if true change to that working directory
             try:
                 os.chdir(DEFAULT_DIRPATH)
-                subprocess.check_output(["rm","-rf","*"])
                 os.mkdir(DEFAULT_DIRNAME)
-                #TODO Check if we are in the right directory
             except Exception as e:
                 #handle the exception and log out the errors
                 logging.error(e)
@@ -61,12 +61,11 @@ class FilesDownloader:
         except Exception as e:
             logging.error(e)
 
-    def get_files(self):
-        """
-        This does the downloading after curating the html and getting
-        it as a  soup
-        """
-        files_to_download = [] #maintaining a list of files to download
+    def find_internal_links(self):
+        #find all the internal links and build the map of the website
+        pass
+
+    def download(self):
         for key,value in self.filetypes.items():
             for k in self.soup.findAll(key):
                 files = k.get(value)
@@ -77,9 +76,6 @@ class FilesDownloader:
         return files_to_download
 
     def download_js(self):
-        """
-        Download all the js files that are available on the site
-        """
         #TODO Remove the below array
         files = []
         for j in self.soup.findAll("script"):
@@ -89,9 +85,6 @@ class FilesDownloader:
         return js
 
     def download_img(self):
-        """
-        Download all the ava[ilable images on thes site
-        """
         files = []
         for j in self.soup.findAl("img"):
             img = j.get("src")
@@ -99,10 +92,12 @@ class FilesDownloader:
                 files.append(img)
         return files
 
-    def __exit__(self):
+    def search_css(self):
         pass
 
-                
+    def __exit__(self):
+        #what happens when the program exits
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download source files of a website.')
     parser.add_argument("--url",dest="url",action="store",help="this is the url for the website you wish to clone")
