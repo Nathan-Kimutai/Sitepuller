@@ -3,7 +3,10 @@ import sys
 import os
 import requests
 from bs4 import BeautifulSoup
-
+"""
+I wrote this code when I was a python noob
+So bear with me if you see some noobish stuff here
+"""
 html=requests.get(sys.argv[1]).text
 the_soup=BeautifulSoup(html,"html.parser")
 filetypes={'link':'href','img':'src'}

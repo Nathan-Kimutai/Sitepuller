@@ -1,12 +1,13 @@
-#!/usr/bin/python3.7
+#!/usr/bin/env python3
 import logging
+import subprocess
 import sys
 import os
 import requests
 import argparse
 from bs4 import BeautifulSoup
 
-base_dir = os.path.abspath(os.path.dirname(__file__)) + "/../downlads"
+base_dir = os.path.abspath(os.path.dirname(__file__)) + "/../downloads"
 
 DEFAULT_DIRNAME =  "website"
 DEFAULT_DIRPATH =  base_dir
@@ -18,12 +19,22 @@ class FilesDownloader:
     """
     #TODO Improve this file every day to make it download almost anything and anysite
     def __init__(self,url):
-        self.url = url
-        self.raw_html= requests.get(self.url)
+        if url:
+            self.url = url
+        else:
+            logging.warning("The url cannot be empty") 
+            sys.exit(1)
+        
+        try:
+            self.raw_html= requests.get(self.url)
+        except:
+            logging.error("We could not find the page please check your internet connection and try again")
+            sys.exit(1)
         self.text_html = self.raw_html.text
         self.soup = BeautifulSoup(self.text_html,"html.parser")
         #this are all the tags and and their attributes to look at while
         # downloading all the content from a page
+        
         self.filetypes = {'link':'href','img':'src'}
 
         #check if the path exists to save files
@@ -31,19 +42,22 @@ class FilesDownloader:
             # if true change to that working directory
             try:
                 os.chdir(DEFAULT_DIRPATH)
+                subprocess.check_output(["rm","-rf","*"])
+                os.mkdir(DEFAULT_DIRNAME)
                 #TODO Check if we are in the right directory
             except Exception as e:
                 #handle the exception and log out the errors
                 logging.error(e)
-        #if the path does not exitst create it
-        self.create_directory()
+                #if the path does not exitst create it
+        else:
+            self.create_directory()
 
     def create_directory(self):
         """
         Create the directory to save the files to be downloaded
         """
         try:
-            os.mkdirs(DEFAULT_DIRPATH)
+            os.mkdir(DEFAULT_DIRPATH)
         except Exception as e:
             logging.error(e)
 
@@ -84,6 +98,9 @@ class FilesDownloader:
             if img is not None:
                 files.append(img)
         return files
+
+    def __exit__(self):
+        pass
 
                 
 if __name__ == "__main__":
