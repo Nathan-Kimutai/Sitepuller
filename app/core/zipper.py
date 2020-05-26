@@ -1,7 +1,8 @@
 from zipfile import ZipFile
 import logging
 import os
-# zipObj = ZipFile("../website.zip","w")
+
+PATH = "../downloads/website"
 
 class MyZipper:
     """
@@ -13,28 +14,29 @@ class MyZipper:
         self.zip_name = zip_name
         self.zip_obj = ZipFile(self.path + self.zip_name,"w")
 
+    def __enter__(self):
+        for rel,stuff,filaname in os.walk("."): 
+            print(filename)
+
     def write_to_zip(self,filename):
         """
         Write files passed to the method as arguments to the
         zip file object
         """
-        ## TODO: I cant be opening and closing a zip_obj each and every time
-        ## # TODO: Make sure that I write all the files and then close it after all the files
-        ## have been written to the object
         try:
             with open(filename,"rb") as f:
                 self.zip_obj.write(f.read)
         except Exception as err:
             logging.error(err)
-        # finally:
-        #     # this.zip_obj.close()
-        #     fd.close()
 
     def close_zip_obj(self):
         """
         Close the zip object
         """
         self.zip_obj.close()
+    
+    def __exit__(self):
+        self.close_zip_obj()
 
 if __name__ == "__main__":
     path = "../downloads/"
@@ -42,4 +44,5 @@ if __name__ == "__main__":
     zipper = MyZipper(path,zip_filename)
     for _,_,filenames in os.walk(path):
         for files in filenames:
+            print(filenames)
             zipper.write_to_zip(files)
