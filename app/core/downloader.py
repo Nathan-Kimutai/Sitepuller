@@ -24,9 +24,9 @@ class FilesDownloader:
         if url:
             self.url = url
         else:
-            logging.warning("The url cannot be empty") 
+            logging.warning("The url cannot be empty")
             sys.exit(1)
-        
+
         try:
             self.raw_html= requests.get(self.url)
         except:
@@ -36,7 +36,7 @@ class FilesDownloader:
         self.soup = BeautifulSoup(self.text_html,"html.parser")
         #this are all the tags and and their attributes to look at while
         # downloading all the content from a page
-        
+
         self.filetypes = {'link':'href','img':'src','script':'src'}
 
         #check if the path exists to save files
@@ -96,7 +96,7 @@ class FilesDownloader:
         pass
 
     def __exit__(self):
-        #what happens when the program exits
+        pass
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download source files of a website.')
