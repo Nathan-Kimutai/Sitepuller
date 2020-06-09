@@ -8,6 +8,10 @@ main = Blueprint('main',__name__)
 def index():
     return render_template("index.html")
 
+@main.route("/android",methods=['GET','POST'])
+def android_development():
+    return render_template("android.html")
+
 @main.route("/download",methods=['GET','POST'])
 def download_site():
     uploads = os.path.join(current_app.root_path,"downloads") + "/website.zip"
