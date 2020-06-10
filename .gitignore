@@ -1,3 +1,5 @@
 venv/
 __pycache__/
 app/downloads/
+*.swp
+*.pyc

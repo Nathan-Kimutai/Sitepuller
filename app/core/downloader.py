@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import logging
 import subprocess
 import re
@@ -65,24 +64,35 @@ class FilesDownloader:
         #find all the internal links and build the map of the website
         pass
 
-    def download(self):
+    def files_to_download(self):
+        files_to_download = []
         for key,value in self.filetypes.items():
             for k in self.soup.findAll(key):
                 files = k.get(value)
-                print(files)
-                if files is not None and files.startswith("/") or files.startswith("css"):
-                    files_to_download.append(files)
+                if files is not None and files.startswith("/") or files is not None and files.startswith("css"):
+                    files_to_download.append(self.url + files)
 
         return files_to_download
 
     def download_js(self):
         #TODO Remove the below array
-        files = []
-        for j in self.soup.findAll("script"):
-            js = j.get("src")
-            if js is not None and js.startswith("/"):
-                files.append(js)
-        return js
+        js_files = [x for x in self.files_to_download() if x.endswith(".js")]
+        #print(os.getcwd())
+        try:
+            os.chdir("website")
+            os.mkdir("js")
+        except Exception as e:
+            print(e)
+        for f in js_files:
+            resp = requests.get(f).content
+            try:
+                filepipe = open(os.path.basename(f),"wb")
+                filepipe.write(resp)
+            except:
+                pass
+            finally:
+                filepipe.close()
+        return "Success"
 
     def download_img(self):
         files = []
@@ -104,5 +114,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     url = args.url
     client = FilesDownloader(url)
-    for i in client.get_files():
-        print(i)
+    client.download_js()

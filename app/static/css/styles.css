@@ -1,4 +1,99 @@
 #navbar {
-  height: 50px;
-  border-radius: 0;
+	background-color: #000;
+	border-radius: 0;
+	border: none;
+	color: #fff;
+}
+
+#navbar a {
+	color: #fff;
+	text-transform: uppercase;
+}
+
+#banner {
+	/* background: #293f50f5; */
+	background: url("../img/main_header.jpg");
+	background-color: #293f5093;
+	background-size: contain;
+	padding-top: 50px;
+}
+
+#banner h2 {
+	font-size: 44px;
+	color: #fff;
+}
+
+#banner p {
+	line-height: 44px;
+	font-size: 22px;
+	color: #fff;
+}
+
+#banner .btn {
+	border: 2px solid #fff;
+	padding: 20px 20px 20px 20px;
+	text-transform: uppercase;
+	color: #fff;
+}
+
+#banner .btn:hover {
+	background-color: #fff;
+	color: #293f50;
+}
+.overlay {
+	background-color: rgba(0, 0, 0, 0.719);
+	padding-bottom: 50px;
+}
+
+.navbar-toggle {
+	border: none;
+}
+
+#showcase {
+	padding: 20px;
+}
+
+#showcase p {
+	color: black;
+	letter-spacing: .5px;
+	line-height: 20px;
+}
+
+footer {
+	background-color: rgb(94, 39, 39);
+	color: #fff;
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+footer ul {
+	list-style: none;
+}
+
+footer a {
+	color: white;
+	margin-left: -38px;
+	line-height: 44px;
+}
+
+footer a:hover {
+	text-decoration: none;
+	color: rgb(68, 65, 65);
+}
+
+@media (max-width: 560px ) {
+	.overlay {
+		padding-top: 20px;
+		text-align: center;
+	}
+	#banner .btn {
+		padding: 15px 10px 15px 10px;
+	}
+	
+	#showcase {
+		text-align: center;
+	}
+	footer {
+		text-align: center;
+	}
 }
