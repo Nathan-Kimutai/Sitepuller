@@ -50,7 +50,6 @@ class FilesDownloader:
                 #if the path does not exitst create it
         else:
             self.create_directory()
-
     def create_directory(self):
         """
         Create the directory to save the files to be downloaded
@@ -78,32 +77,49 @@ class FilesDownloader:
         #TODO Remove the below array
         js_files = [x for x in self.files_to_download() if x.endswith(".js")]
         #print(os.getcwd())
+        self.cd_website()
         try:
-            os.chdir("website")
             os.mkdir("js")
         except Exception as e:
             print(e)
         for f in js_files:
+            basename = os.path.basename(f)
             resp = requests.get(f).content
-            try:
-                filepipe = open(os.path.basename(f),"wb")
-                filepipe.write(resp)
-            except:
-                pass
-            finally:
-                filepipe.close()
+            file_path = os.path.join(os.getcwd(),basename)
+            with open(file_path,'wb') as fd:
+                fd.write(resp)
+                print("Writing {} to {}".format(basename,file_path))
+        #return something to show that there was a success
         return "Success"
 
     def download_img(self):
-        files = []
-        for j in self.soup.findAl("img"):
-            img = j.get("src")
-            if img is not None:
-                files.append(img)
-        return files
-
+        img_files = [x for x in self.files_to_download() if x.endswith(".png") or x.endswith(".jpg") or x.endswith(".jpeg") or \
+            x.endswith(".ico")]
+        #change to the the website directory
+        self.cd_website()
+        try:
+            os.mkdir("img")
+        except Exception as e:
+            print("The directory already exists or cannot be created")
+            pass 
+        except Exception as e:
+            pass 
+        #download and save the images to img folder
+        for img in img_files:
+            basename = os.path.basename(img)
+            file_path = os.path.join(os.getcwd(),basename)
+            resp = requests.get(img).content 
+            with open(file_path,"wb") as fd:
+                fd.write(resp)
+    #TODO search for all the css files burried deep in the links in the page
     def search_css(self):
         pass
+
+    def cd_website(self):
+        try:
+            os.chdir("website")
+        except Exception as e:
+            print("Already in the directory")
 
     def __exit__(self):
         pass
@@ -114,4 +130,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     url = args.url
     client = FilesDownloader(url)
+    client.download_img()
     client.download_js()
