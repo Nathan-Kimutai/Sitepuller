@@ -70,25 +70,24 @@ class FilesDownloader:
                 files = k.get(value)
                 if files is not None and files.startswith("/") or files is not None and files.startswith("css"):
                     files_to_download.append(self.url + files)
-
         return files_to_download
 
     def download_js(self):
-        #TODO Remove the below array
         js_files = [x for x in self.files_to_download() if x.endswith(".js")]
         #print(os.getcwd())
         self.cd_website()
         try:
             os.mkdir("js")
         except Exception as e:
-            print(e)
+            pass
         for f in js_files:
             basename = os.path.basename(f)
             resp = requests.get(f).content
-            file_path = os.path.join(os.getcwd(),basename)
+            file_path = os.path.join(os.getcwd() + "/js/",basename)
+            print(file_path)
             with open(file_path,'wb') as fd:
                 fd.write(resp)
-                print("Writing {} to {}".format(basename,file_path))
+                print("Writing {} to {}".format(basename,file_path),flush=True)
         #return something to show that there was a success
         return "Success"
 
@@ -107,10 +106,13 @@ class FilesDownloader:
         #download and save the images to img folder
         for img in img_files:
             basename = os.path.basename(img)
-            file_path = os.path.join(os.getcwd(),basename)
+            file_path = os.path.join(os.getcwd() + "/img/",basename)
             resp = requests.get(img).content 
+            print(file_path)
             with open(file_path,"wb") as fd:
                 fd.write(resp)
+                print("Writing {} to {}".format(basename,file_path),flush=True)
+
     #TODO search for all the css files burried deep in the links in the page
     def search_css(self):
         pass
@@ -124,6 +126,7 @@ class FilesDownloader:
     def __exit__(self):
         pass
 
+#added this part for testing purposes otherwise this all program won't run here
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Download source files of a website.')
     parser.add_argument("--url",dest="url",action="store",help="this is the url for the website you wish to clone")
