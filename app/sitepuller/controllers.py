@@ -8,7 +8,7 @@ main = Blueprint('main',__name__)
 @main.route("/",methods=['GET','POST'])
 def index():
     zip_filename = "website.zip"
-    zip_folder = os.path.join(current_app.root_path,"downloads") + "/"
+    zip_folder = os.path.join(current_app.root_path,"downloads") + "/website/"
     if request.method == "POST":
         url = request.form.get("url")
         client = FilesDownloader(url)

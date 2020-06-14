@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import logging
-import subprocess
-import re
-import sys
-import os
-import requests
-import argparse
 from bs4 import BeautifulSoup
+import argparse
+import logging
+import os
+import re
+import requests
+import subprocess
+import sys
 
 base_dir = os.path.abspath(os.path.dirname(__file__)) + "/../downloads"
 
@@ -135,3 +135,4 @@ if __name__ == "__main__":
     client = FilesDownloader(url)
     client.download_img()
     client.download_js()
+
